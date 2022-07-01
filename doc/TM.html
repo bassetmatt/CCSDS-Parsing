@@ -1,0 +1,127 @@
+<head>
+	<link rel="stylesheet" href="style.css">
+	<title>Mbed code overview</title>
+</head>
+
+<body>
+	<h1>TM frame diagram</h1>
+	<h2>TM Standard Packet</h2>
+	<h3>Main structure</h3>
+	<div class="main"><table>
+		<tr>
+			<th colspan="7">Packet Primary Header</th>
+			<th colspan="3">Packet Data Field</th>
+		</tr>
+		<tr>
+			<td colspan="4">Packet id</td>
+			<td colspan="2">Packet sequence control</td>
+			<td rowspan="2">Packet Length</td>
+			<td rowspan="2">Secondary Header</td>
+			<td rowspan="2">Data</td>
+			<td rowspan="2">Packet Error control</td>
+		</tr>
+		<tr>
+			<td>Version Number</td>
+			<td>Type</td>
+			<td>Secondary Header Flag</td>
+			<td>APID</td>
+			<td>Grouping Flags</td>
+			<td>Source Sequence Control</td>
+		</tr>
+		<tr>
+			<td>3</td>
+			<td>1</td>
+			<td>1</td>
+			<td>11</td>
+			<td>2</td>
+			<td>14</td>
+			<td>16</td>
+			<td rowspan="2">12*8</td>
+			<td rowspan="2">Variable</td>
+			<td rowspan="2">16</td>
+		</tr>
+		<tr>
+			<td colspan="4">16</td>
+			<td colspan="2">16</td>
+			<td>16</td>
+		</tr>
+	</table></div>
+	<h3>Variables details</h3>
+	<ul>
+		<li>
+			<b>Version Number</b>: <code>000</code>, fixed value, not useful.
+		</li>
+		<li>
+			<b>Type</b>: 0 differenciates the TM and TC packets, 0 for TM and 1 for TC.
+		</li>
+		<li>
+			<b>Secondary Header Flag</b>: <code>1</code> indicates thee use of the secondary header, while <code>0</code> indicates the contrary.
+		</li>
+		<li>
+			<b>APID</b>: Tells the origin of the packet. Values <code>0b0</code> and <code>0x7FF</code> (11111111111) are reserved to special packets. Respectively time and idle packets.
+		</li>
+		<li>
+			<b>Grouping flags</b>: Segmentation flag fixed at <code>11</code> because we don't use segmentation on TM packets.
+		</li>
+		<li>
+			<b>Source sequence control</b>: Counter on 2 bytes. Used regarding each APID, must be set to 0 each time the max limit is reached. Is used to identify packets on the ground.
+		</li>
+		<li>
+			<b>Packet length</b>: <code>L</code> Represents the packet length of the Packet Data Field such as <code>L</code> = (Number of bytes in the packet <b>minus 1</b>). Must be <code>unsigned int</code> type. Careful, it takes the seccondary header into account.
+		</li>
+	</ul>
+	<h3>Secondary Header details</h3>
+	<div class="main"><table>
+		<tr>
+			<td>Spare</td>
+			<td>Source Packet PUS Version Number</td>
+			<td>Spare</td>
+			<td>Service Type</td>
+			<td>Servvice Subtype</td>
+			<td>Packet Sub Counter</td>
+			<td>Destination ID</td>
+			<td>Time</td>
+		</tr>
+		<tr>
+			<td>BitString 1</td>
+			<td>Enum 3</td>
+			<td>BitString 4</td>
+			<td>Enum 8</td>
+			<td>Uint 8</td>
+			<td>Uint 8</td>
+			<td>Enum 8</td>
+			<td>CUC 7 Bytes</td>
+		</tr>
+	</table></div>
+	
+	<h3>Variables details</h3>
+	<ul>
+		<li>
+			<b>Spare</b>: <code>0</code> fixed value to maintain symetry with TCs.
+		</li>
+		<li>
+			<b>Source Packet PUS Version Number</b>: <code>0b001</code> Fixed value. Indicates the PUS version used in case PUS may evolve in the future. We use 1 by default.
+		</li>
+		<li>
+			<b>Spare</b>: <code>0b0000</code> Fixed. Completes the first byte.
+		</li>
+		<li>
+			<b>Service Type</b>: Enum on 8 bits. Indicats the PUS version used. 0 to 127 for standard PUS services. 127 to 255 for mission specific services. <br>
+			Here <code>3</code> is used.
+		</li>
+		<li>
+			<b>Service SubType</b>: Enum on 8 bits. Indicats the PUS version used. 0 to 127 for standard PUS services. 127 to 255 for mission specific services. <br>
+			Here <code>25</code> is used.
+		</li>
+		<li>
+			<b>Packet sub counter</b>: In case where we have different destination IDs, the applciation keeps this field updated.
+		</li>
+		<li>
+			<b>Destination ID</b>: Indentifies the destination of the TC packet, useless here.
+		</li>
+		<li>
+			<b>Time</b>: Time encoded with CUC format on 7 bytes 
+		</li>
+	</ul>
+
+</body>
