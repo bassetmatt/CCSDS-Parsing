@@ -9,17 +9,23 @@
  */
 
 // Fixed value, useless
-#define VERSION_NUMBER 0b000
+#define TM_PACKET_VERSION_NUMBER 0b000
 // 0 for TM, 1 for TC
 #define TYPE_PACKET_TM 0
 // 1 means secondary header is use 
-#define SECONDARY_HEADER_UFF 0
+#define SECONDARY_HEADER_OFF 0
 #define SECONDARY_HEADER_ON  1
 // Defines the source of the packet, 11 bits, 0x0 (time)
 // and Ob11111111111 (idle) forbidden for base
 //TODO define
 #define APID_BASE 0xABC // Random for now
 #define APID_IDLE 0x7FF
+
+// Max counter value
+#define MAX_SEQUENCE_COUNTER 0x3FFF
+
+//Grouping flags
+#define TM_GROUPING_FLAGS 0b11
 
 #define PACKET_MAX_LENGTH 65542U
 
@@ -51,10 +57,31 @@ typedef struct TMPacketPrimaryHeader
 } TMPacketHeader;
 
 /**
- * @brief Initializes the header with correct values
- * 
- * @param header The adress of the header
- * @param idle Is the packet idle or not
- * @param length The length of the packet to transmit
+ * @brief Structure that represents the secondary header of a TM packet.
+ * In the cases where it is defined.
  */
-void initPrimHeader(TMPacketHeader* header, bool idle, u16 length);
+typedef struct TMPacketSecondaryHeader
+{
+    /* PUS version*/
+    u8 versionPUS;
+    /* Service type*/
+    u8 serviceType;
+    /* Service subtype*/
+    u8 serviceSubType;
+    /* Packet sub counter*/
+    u8 subCounter;
+    /* ID of the ddestination*/
+    u8 destinationID;
+
+} TMPacketSecondaryHeader;
+
+
+/**
+ * @brief Initializes the TM Primary Header with correct values
+ * 
+ * @param header    The adress of the header
+ * @param idle      Is the packet idle or not
+ * @param seqCount  The counter of sequences
+ * @param length    The length of the packet to transmit
+ */
+void initPrimHeader(TMPacketHeader* header, bool idle, u16* seqCount, u16 length);
