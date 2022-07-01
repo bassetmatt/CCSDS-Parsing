@@ -3,4 +3,4 @@ add_library(
         temp.c
 )
 
-target_include_directories(ccsdsParse PRIVATE ${PROJECT_SOURCE_DIR}/include())
+target_include_directories(ccsdsParse PRIVATE ${PROJECT_SOURCE_DIR}/include)
