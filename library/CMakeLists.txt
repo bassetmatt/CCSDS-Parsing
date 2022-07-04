@@ -1,6 +1,6 @@
 add_library(
     ccsdsParse
-        temp.c
+        tmpacket.c
 )
 
 target_include_directories(ccsdsParse PRIVATE ${PROJECT_SOURCE_DIR}/include)

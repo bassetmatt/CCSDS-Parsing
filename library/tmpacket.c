@@ -23,3 +23,19 @@ void initPrimHeader(TMPacketHeader* header, bool idle, u16* seqCount, u16 length
     seq_ctrl += TM_GROUPING_FLAGS >> 14;
     header->packet_seq_ctrl = seq_ctrl;
 }
+
+void initSecondHeader(TMPacketSecondaryHeader* header, CUCTime* time) {
+    header->versionPUS = PUS_VERSION_NUMBER;
+    header->serviceType = SERVICE_TYPE;
+    header->serviceSubType = SERVICE_SUBTYPE;
+    //TODO set these two parameters to correct values
+    header->subCounter = 0;
+    header->destinationID = 0;
+    header->time = *time;
+}
+
+void initTime(CUCTime* time, u32 coarse, u16 fine) {
+    time->p_field = P_FIELD_TIMER;
+    time->coarseTime = coarse;
+    time->fineTime = fine;
+}
