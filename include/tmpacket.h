@@ -1,3 +1,6 @@
+#ifndef TMPACKET_H
+#define TMPACKET_H
+
 #include "int.h"
 /**
  * Definitions for TM Packets
@@ -39,8 +42,9 @@
 #define SERVICE_TYPE     3U
 #define SERVICE_SUBTYPE 25U
 
-// Time, CUC format
-#define TIME 0x0000000 //TODO implement
+// Time p-field
+#define P_FIELD_TIMER 0x1E
+
 /**
  * @brief Structure that represents the primary header of
  * a TM  packet with the 6 bytes of information it shall contain
@@ -72,12 +76,26 @@ typedef struct TMPacketSecondaryHeader
     u8 subCounter;
     /* ID of the ddestination*/
     u8 destinationID;
-
+    /* Time (CUC 7 bytes format) */
+    CUCTime time;
 } TMPacketSecondaryHeader;
+
+/**
+ * @brief Structure to represent the time with CUC format 
+ */
+typedef struct CUCTime
+{
+    /* Informations about the format, must be 0x1E */
+    u8  p_field;
+    /* Number of seconds since 1958/1/1 */
+    u32 coarseTime;
+    /* Subseconds counter */
+    u16 fineTime;
+} CUCTime;
 
 
 /**
- * @brief Initializes the TM Primary Header with correct values
+ * @brief Initialises the TM Primary Header with correct values
  * 
  * @param header    The adress of the header
  * @param idle      Is the packet idle or not
@@ -85,3 +103,21 @@ typedef struct TMPacketSecondaryHeader
  * @param length    The length of the packet to transmit
  */
 void initPrimHeader(TMPacketHeader* header, bool idle, u16* seqCount, u16 length);
+
+/**
+ * @brief Initialises the TM Secondary Header with correct values
+ * 
+ * @param header The adress of the header
+ * @param time   The adress of the time handler
+ */
+void initSecondHeader(TMPacketSecondaryHeader* header, CUCTime* time);
+
+/**
+ * @brief Initialises the time counter with a given value
+ * 
+ * @param time   The adress of the timer
+ * @param coarse The coarse time value
+ * @param fine   The fine time value
+ */
+void initTime(CUCTime* time, u32 coarse, u16 fine);
+#endif

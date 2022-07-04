@@ -1,3 +1,6 @@
+#ifndef INT_H
+#define INT_H
+
 #include <stdint.h>
 
 typedef uint8_t bool;
@@ -9,3 +12,4 @@ typedef uint32_t u32;
 typedef int8_t  i8;
 typedef int16_t i16;
 typedef int32_t i32;
+#endif
