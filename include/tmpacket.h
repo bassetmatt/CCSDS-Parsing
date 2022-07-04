@@ -93,12 +93,17 @@ typedef struct CUCTime
     u16 fineTime;
 } CUCTime;
 
+/**
+ * @brief Structure to represent a whole packet
+ * 
+ */
 typedef struct TMPacket {
     TMPacketPrimaryHeader   pHeader;
     TMPacketSecondaryHeader sHeader;
     u8*                     data;
     u16                     crc;
 } TMPacket;
+
 /**
  * @brief Initialises the TM Primary Header with correct values
  * 
