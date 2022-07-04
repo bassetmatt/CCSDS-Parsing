@@ -58,7 +58,7 @@ typedef struct TMPacketPrimaryHeader
     /* Indicates the lenth (in bytes) of the following packet minus 1*/
     u16 packet_length;
 
-} TMPacketHeader;
+} TMPacketPrimaryHeader;
 
 /**
  * @brief Structure that represents the secondary header of a TM packet.
@@ -86,14 +86,19 @@ typedef struct TMPacketSecondaryHeader
 typedef struct CUCTime
 {
     /* Informations about the format, must be 0x1E */
-    u8  p_field;
+    u8  pField;
     /* Number of seconds since 1958/1/1 */
     u32 coarseTime;
     /* Subseconds counter */
     u16 fineTime;
 } CUCTime;
 
-
+typedef struct TMPacket {
+    TMPacketPrimaryHeader   pHeader;
+    TMPacketSecondaryHeader sHeader;
+    u8*                     data;
+    u16                     crc;
+} TMPacket;
 /**
  * @brief Initialises the TM Primary Header with correct values
  * 
@@ -102,7 +107,7 @@ typedef struct CUCTime
  * @param seqCount  The counter of sequences
  * @param length    The length of the packet to transmit
  */
-void initPrimHeader(TMPacketHeader* header, bool idle, u16* seqCount, u16 length);
+void initPrimHeader(TMPacketPrimaryHeader* header, bool idle, u16* seqCount, u16 length);
 
 /**
  * @brief Initialises the TM Secondary Header with correct values
@@ -120,4 +125,20 @@ void initSecondHeader(TMPacketSecondaryHeader* header, CUCTime* time);
  * @param fine   The fine time value
  */
 void initTime(CUCTime* time, u32 coarse, u16 fine);
+
+/**
+ * @brief Create a Packet from all the fields it must contain
+ * 
+ * @param packet The actual packet adress
+ * @param pHead  The primary header
+ * @param sHead  The secondary header, NULL if idle packet
+ * @param data   The data containin the packet, its size must be the one
+ *               defined in the primary header
+ * @param crc    The crc checksum of the data
+ */
+void createPacket(TMPacket* packet,
+                  TMPacketPrimaryHeader pHead, 
+                  TMPacketSecondaryHeader sHead,
+                  u8* data,
+                  u16 crc);
 #endif

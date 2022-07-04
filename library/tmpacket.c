@@ -1,6 +1,6 @@
 #include "tmpacket.h"
 
-void initPrimHeader(TMPacketHeader* header, bool idle, u16* seqCount, u16 length) {
+void initPrimHeader(TMPacketPrimaryHeader* header, bool idle, u16* seqCount, u16 length) {
     header->packet_length = length;
     //setting up packet id
     u16 id = 0;
@@ -35,7 +35,14 @@ void initSecondHeader(TMPacketSecondaryHeader* header, CUCTime* time) {
 }
 
 void initTime(CUCTime* time, u32 coarse, u16 fine) {
-    time->p_field = P_FIELD_TIMER;
+    time->pField = P_FIELD_TIMER;
     time->coarseTime = coarse;
     time->fineTime = fine;
+}
+
+void createPacket(TMPacket* packet, TMPacketPrimaryHeader pHead, TMPacketSecondaryHeader sHead, u8* data, u16 crc) {
+    packet->pHeader = pHead;
+    packet->sHeader = sHead;
+    packet->data    = data;
+    packet->crc     = crc;
 }
