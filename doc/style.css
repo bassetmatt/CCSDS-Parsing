@@ -1,0 +1,53 @@
+*{
+  background-color: #181A1B;
+  color:#E8E6E3;
+}
+h1{
+  text-align:center;
+  font-size: 48px;
+}
+p{
+  font-size: 12pt;
+}
+table{
+  border: 3px solid #303436;
+}
+td,th {
+  border: 1px solid #303436;
+  padding: 5px;
+  text-align: center;
+}
+td.void {
+  border: 1px dashed #303436;
+}
+
+.ind{
+  padding-left: 32pt;
+}
+.ext{
+  color:#fe4450;
+}
+code {
+  font-family: "Hack", "FiraCode Nerd Font Mono", "Lucida Console", "Menlo", "Monaco", "Courier", monospace;
+  font-size: 11pt;
+}
+
+.main {
+  font-family:'Times New Roman', Times, serif;
+}
+.print{
+  color:#f97e72;
+}
+.com{
+  color:#848bbd
+}
+.func{
+  color:#36f9f6;
+}
+.funcmain{
+  color:#fede5d
+}
+
+a::before, a::after{
+  color: #E8E6E3;
+}
