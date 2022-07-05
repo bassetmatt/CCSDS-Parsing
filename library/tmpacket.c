@@ -1,6 +1,6 @@
 #include "tmpacket.h"
 
-void initPrimHeader(TMPacketPrimaryHeader* header, bool idle, u16* seqCount, u16 length) {
+int initPrimHeader(TMPacketPrimaryHeader* header, bool idle, u16* seqCount, u16 length) {
     header->packet_length = length;
     //setting up packet id
     u16 id = 0;
@@ -22,9 +22,10 @@ void initPrimHeader(TMPacketPrimaryHeader* header, bool idle, u16* seqCount, u16
         (*seqCount)++;
     seq_ctrl += TM_GROUPING_FLAGS >> 14;
     header->packet_seq_ctrl = seq_ctrl;
+    return 0;
 }
 
-void initSecondHeader(TMPacketSecondaryHeader* header, CUCTime* time) {
+int initSecondHeader(TMPacketSecondaryHeader* header, CUCTime* time) {
     header->versionPUS = PUS_VERSION_NUMBER;
     header->serviceType = SERVICE_TYPE;
     header->serviceSubType = SERVICE_SUBTYPE;
@@ -32,17 +33,20 @@ void initSecondHeader(TMPacketSecondaryHeader* header, CUCTime* time) {
     header->subCounter = 0;
     header->destinationID = 0;
     header->time = *time;
+    return 0;
 }
 
-void initTime(CUCTime* time, u32 coarse, u16 fine) {
+int initTime(CUCTime* time, u32 coarse, u16 fine) {
     time->pField = P_FIELD_TIMER;
     time->coarseTime = coarse;
     time->fineTime = fine;
+    return 0;
 }
 
-void createPacket(TMPacket* packet, TMPacketPrimaryHeader pHead, TMPacketSecondaryHeader sHead, u8* data, u16 crc) {
+int createPacket(TMPacket* packet, TMPacketPrimaryHeader pHead, TMPacketSecondaryHeader sHead, u8* data, u16 crc) {
     packet->pHeader = pHead;
     packet->sHeader = sHead;
     packet->data    = data;
     packet->crc     = crc;
+    return 0;
 }

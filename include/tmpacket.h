@@ -106,16 +106,18 @@ typedef struct TMPacket {
  * @param idle      Is the packet idle or not
  * @param seqCount  The counter of sequences
  * @param length    The length of the packet to transmit
+ * @return int      Exit code
  */
-void initPrimHeader(TMPacketPrimaryHeader* header, bool idle, u16* seqCount, u16 length);
+int initPrimHeader(TMPacketPrimaryHeader* header, bool idle, u16* seqCount, u16 length);
 
 /**
  * @brief Initialises the TM Secondary Header with correct values
  * 
  * @param header The adress of the header
  * @param time   The adress of the time handler
+ * @return int      Exit code
  */
-void initSecondHeader(TMPacketSecondaryHeader* header, CUCTime* time);
+int initSecondHeader(TMPacketSecondaryHeader* header, CUCTime* time);
 
 /**
  * @brief Initialises the time counter with a given value
@@ -123,8 +125,9 @@ void initSecondHeader(TMPacketSecondaryHeader* header, CUCTime* time);
  * @param time   The adress of the timer
  * @param coarse The coarse time value
  * @param fine   The fine time value
+ * @return int      Exit code
  */
-void initTime(CUCTime* time, u32 coarse, u16 fine);
+int initTime(CUCTime* time, u32 coarse, u16 fine);
 
 /**
  * @brief Create a Packet from all the fields it must contain
@@ -135,8 +138,9 @@ void initTime(CUCTime* time, u32 coarse, u16 fine);
  * @param data   The data containin the packet, its size must be the one
  *               defined in the primary header
  * @param crc    The crc checksum of the data
+ * @return int      Exit code
  */
-void createPacket(TMPacket* packet,
+int createPacket(TMPacket* packet,
                   TMPacketPrimaryHeader pHead, 
                   TMPacketSecondaryHeader sHead,
                   u8* data,
