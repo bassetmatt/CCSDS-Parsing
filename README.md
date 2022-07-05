@@ -1,5 +1,6 @@
 # CCSDS-Parsing
-A small lib to parse CCSDS packages in C
+A small lib to parse CCSDS packages in C <br>
+
 ## Repo organisation
 - Root folder: Basic files, license, this Readme, etc..
 - `library/`: source files of the library.

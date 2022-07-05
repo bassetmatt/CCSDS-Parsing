@@ -61,6 +61,19 @@ typedef struct TMPacketPrimaryHeader
 } TMPacketPrimaryHeader;
 
 /**
+ * @brief Structure to represent the time with CUC format 
+ */
+typedef struct CUCTime
+{
+    /* Informations about the format, must be 0x1E */
+    u8  pField;
+    /* Number of seconds since 1958/1/1 */
+    u32 coarseTime;
+    /* Subseconds counter */
+    u16 fineTime;
+} CUCTime;
+
+/**
  * @brief Structure that represents the secondary header of a TM packet.
  * In the cases where it is defined.
  */
@@ -81,24 +94,16 @@ typedef struct TMPacketSecondaryHeader
 } TMPacketSecondaryHeader;
 
 /**
- * @brief Structure to represent the time with CUC format 
+ * @brief Structure to represent a whole packet
+ * 
  */
-typedef struct CUCTime
-{
-    /* Informations about the format, must be 0x1E */
-    u8  pField;
-    /* Number of seconds since 1958/1/1 */
-    u32 coarseTime;
-    /* Subseconds counter */
-    u16 fineTime;
-} CUCTime;
-
 typedef struct TMPacket {
     TMPacketPrimaryHeader   pHeader;
     TMPacketSecondaryHeader sHeader;
     u8*                     data;
     u16                     crc;
 } TMPacket;
+
 /**
  * @brief Initialises the TM Primary Header with correct values
  * 
